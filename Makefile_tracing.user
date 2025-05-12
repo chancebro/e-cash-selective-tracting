@@ -1,0 +1,18 @@
+CXX = g++
+CXXFLAGS = -I./include
+LDFLAGS = -L./lib -lmcl -lmclbn256 -lsqlite3
+TARGET = Tracing
+
+SRCS = tracing_test.cpp new.cpp
+OBJS = $(SRCS:.cpp=.o)
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CXX) -o $@ $^ $(LDFLAGS)
+
+%.o: %.cpp
+	$(CXX) -c $< -o $@ $(CXXFLAGS)
+
+clean:
+	rm -f $(OBJS) $(TARGET)
