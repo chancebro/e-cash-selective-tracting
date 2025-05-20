@@ -661,8 +661,6 @@ bool SPK_verify(const SPK_proof &proof, const mcl::bn::G1& h, const mcl::bn::G1 
 
     //std::cout << "[D 검증] " << (lD==rD ? "✅ 성공" : "❌ 실패") << std::endl;
 
-
-
     return (lB1 == rB1)&&(lB1f == rB1f)&&(er == el)&&(lS==rS)&&(lD==rD); 
     }
 bool Payment(User& payer, User& payee,
@@ -909,6 +907,8 @@ pk_5_proof pk_5_prove(User &user_out,const mcl::bn::Fp12 &G) {
 // Verifier: 증명 검증
 bool pk_5_verify(const pk_5_proof &proof,const mcl::bn::Fp12 &G) {
    
+   
+
     Fp12 U_c,lU;
     Fp12::pow(U_c,proof.U,proof.c);
     Fp12::mul(lU, U_c, proof.Cm_U);
@@ -937,6 +937,7 @@ bool finalise(User &user,
     const mcl::bn::G1 &g, const mcl::bn::G1 &g0, const mcl::bn::G1 &g1,const mcl::bn::G2 &g_G2,const mcl::bn::Fp12 &G,
     const mcl::bn::G1 &h, const mcl::bn::G1 &h0, const mcl::bn::G1 &h1, const mcl::bn::G1 &h2,const mcl::bn::G2 &h_G2,const mcl::bn::Fp12 &H, const mcl::bn::Fp12 &H1) {
 // Step 0: 검증 전 증명 생성
+
 //payee side 1 start
 pk_5_proof pk5 = pk_5_prove(user,G);
 //payee side 1 start
@@ -950,6 +951,8 @@ return false;}
 if (!SPK_verify(user.spk, h, h0, h1, h2, h_G2, G, H, H1)) {
 std::cout << "❌ Verification failed: SPK is not valid" << std::endl;
 return false;}
+
+return true;
 //bank side 1 end
 
 }
@@ -1254,7 +1257,7 @@ bool Payment_time(User& payer, User& payee,
     payer_time  = duration_cast<nanoseconds>(t3 - t2).count();
     payee2_time = duration_cast<nanoseconds>(t4 - t3).count();
 
-    
+    return true;
 }
 bool randomise_time(User &user,
     const mcl::bn::G1 &g, const mcl::bn::G1 &g0, const mcl::bn::G1 &g1, const mcl::bn::G2 &g_G2, const mcl::bn::Fp12 &G,
@@ -1382,7 +1385,6 @@ bool finalise_time(User &user,
         std::cout << "❌ Verification failed: Pk_5 is not valid" << std::endl;
         return false;
     }
-
     if (!SPK_verify(user.spk, h, h0, h1, h2, h_G2, G, H, H1)) {
         std::cout << "❌ Verification failed: SPK is not valid" << std::endl;
         return false;
@@ -1393,4 +1395,5 @@ bool finalise_time(User &user,
     payee1_time = duration_cast<nanoseconds>(t2 - t1).count();
     bank1_time = duration_cast<nanoseconds>(t3 - t2).count();
 
+    return true;
 }
