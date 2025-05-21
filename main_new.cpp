@@ -475,6 +475,8 @@ int main() {
 
     G2::mul(W,g_G2,alpha);
     G2::mul(X,h_G2,beta);
+    Fp12::pow(P,GE,x_GE);
+    G1::mul(Q,hE,x_h);
       
     if (account_est(user1, g, g0, g1, g_G2, G)) {
         std::cout << "User 1 account created with signature A = " << user1.A.getStr(16) << std::endl;

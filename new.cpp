@@ -565,6 +565,7 @@ SPK1_proof SPK1_prove(User &user_out,const mcl::bn::G1 h, const mcl::bn::G1 &h0,
     //uID C2
     Fp12::pow(temp_uID,P,r1);
     Fp12::mul(proof.userID_C2,user_out.U,temp_uID);
+    //std::cout << "userID_payer_C2: " << proof.userID_C2<< "\n";
     //Commit for uid C1
     Fp12::pow(proof.Cm_GE,GE,r_r1);
     //commit for uid C2
@@ -956,7 +957,12 @@ SPK2_proof SPK2_prove(User &user_out,const mcl::bn::G1 g, const mcl::bn::G1 &g0,
      //uID C2
      Fp12::pow(temp_uID,P,r1);
      Fp12::mul(proof.userID_C2,user_out.U,temp_uID);
-     
+
+    // std::cout << "[debug] user_out.U = " << user_out.U.getStr(16) << std::endl;
+     //std::cout << "[debug] P = " << P << std::endl;
+     //std::cout << "[debug] r1 = " << r1 << std::endl;
+     //std::cout << "[debug] userID_C2: " << proof.userID_C2 << "\n";
+
      //Commit for uid C1
      Fp12::pow(proof.Cm_GE,GE,r_r1);
      //commit for uid C2
@@ -1435,6 +1441,10 @@ bool insertSPKProof(sqlite3* db,
     std::string uid1C2Str = ss_uid1C2.str();
     std::string uid2C1Str = ss_uid2C1.str();
     std::string uid2C2Str = ss_uid2C2.str();
+
+    //std::cout << "[Debug] INSERT VALUES:\n";
+    //std::cout << "userID_payer_C2: " << uid1C2Str << "\n";
+    //std::cout << "userID_payee_C2: " << uid2C2Str << "\n";
 
     std::stringstream ss;
     ss << "INSERT INTO spk_bundle (S, T, backward_C1, backward_C2, bank_B, forward_C1, forward_C2, "
